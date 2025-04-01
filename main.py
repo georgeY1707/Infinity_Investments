@@ -3,6 +3,14 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+@app.route('/authPage')
+def auth_page():
+    return render_template('authPage.html')
+
+@app.route('/regPage')
+def reg_page():
+    return render_template('regPage.html')
+
 @app.route('/')
 @app.route('/index')
 def index():
