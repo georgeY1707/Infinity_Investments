@@ -1,4 +1,4 @@
-# ИНВЕСТИЦИИ БЕСКОНЕЧНОСТИ
+![INFCOIN](https://raw.githubusercontent.com/georgeY1707/Infinity_Investments/master/static/images/logo.svg) # ИНВЕСТИЦИИ БЕСКОНЕЧНОСТИ
 
 ## О проекте
 *ИНВЕСТИЦИИ БЕСКОНЕЧНОСТИ* — это революционное веб-приложение для инвестиций с собственной внутренней криптовалютой **INFCOIN**.
@@ -31,7 +31,7 @@
 Но изюменкой проекта буде - 
 ***НАША ВИРТУАЛЬНАЯ МОНЕТА INFCOIN***
 
-![INFCOIN](https://raw.githubusercontent.com/georgeY1707/Infinity_Investments/master/static/images/logo.svg)
+
 ![INFCOIN](https://raw.githubusercontent.com/georgeY1707/Infinity_Investments/master/static/images/infcoin.gif)
 
 
