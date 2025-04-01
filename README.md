@@ -1,6 +1,10 @@
 ![INFCOIN](https://raw.githubusercontent.com/georgeY1707/Infinity_Investments/master/static/images/logo.svg)
 # ИНВЕСТИЦИИ БЕСКОНЕЧНОСТИ
 
+### by SouthCode team
+- Mirus
+- GY
+
 ## О проекте
 *ИНВЕСТИЦИИ БЕСКОНЕЧНОСТИ* — это революционное веб-приложение для инвестиций с собственной внутренней криптовалютой **INFCOIN**.
 
