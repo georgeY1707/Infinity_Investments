@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        @font-face {
+            font-family: 'Palui';
+            src: url('static/css/fonts/palui.ttf') format("truetype");
+        }
+
+        body {
+            background-image: url('static/images/background.png');
+        }
+    </style>
+    <link rel="stylesheet" href="static/css/style.css"/>
+    <title>Авторизация ИБ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+    <div style="height: 100vh " class="frame">
+        <div class="auth_div">
+            <div class="auth_header_1">
+                <img style="width: 60px;height: 60px" src="static/images/logo.svg">
+                <p class="main_text">ИНВЕСТИЦИИ<br>БЕСКОНЕЧНОСТИ</p>
+            </div>
+            <div class="auth_header_2">
+                <p>Йоу, залетайте к нам)</p>
+            </div>
+            <div class="container_an">
+                <div class="inner_an_container">
+                    <div class="input-group">
+                        <label>Логин</label>
+                        <input style="margin-top: 4px" type="text" placeholder="Почта или номер телефона">
+                    </div>
+                    <div class="input-group">
+                        <label>Пароль</label>
+                        <input style="margin-top: 4px" type="password" placeholder="Введите пароль">
+                    </div>
+                    <div style="display: flex;" class="switch-container">
+                        <label class="switch">
+                            <input type="checkbox" id="remember">
+                            <span class="slider"></span>
+                        </label>
+                        <label style="margin-left: 14px" for="remember">Запомнить меня</label>
+                    </div>
+                    <button class="button">ВОЙТИ</button>
+                    <div class="register">
+                        Нет аккаунта? <a href="#"> Зарегистрируйтесь</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
