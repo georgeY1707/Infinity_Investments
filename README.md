@@ -31,6 +31,8 @@
 Но изюменкой проекта буде - 
 ***НАША ВИРТУАЛЬНАЯ МОНЕТА INFCOIN***
 
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](https://github.com/georgeY1707/Infinity_Investments/tree/master/static/images/infcoin.gif)
 ![](https://github.com/georgeY1707/Infinity_Investments/tree/master/static/images/infcoin.gif)
 
 # 🚀 Присоединяйтесь к ИНВЕСТИЦИЯМ БЕСКОНЕЧНОСТИ уже сегодня! 💎
