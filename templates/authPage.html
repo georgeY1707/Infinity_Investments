@@ -32,23 +32,25 @@
                 <p>Йоу, залетайте к нам)</p>
             </div>
             <div class="container_an">
-                <div class="inner_an_container">
-                    <div class="input-group">
-                        <label>Логин</label>
-                        <input style="margin-top: 4px" type="text" placeholder="Почта или номер телефона">
-                    </div>
-                    <div class="input-group">
-                        <label>Пароль</label>
-                        <input style="margin-top: 4px" type="password" placeholder="Введите пароль">
-                    </div>
-                    <div style="display: flex;" class="switch-container">
-                        <label class="switch">
-                            <input type="checkbox" id="remember">
-                            <span class="slider"></span>
-                        </label>
-                        <label style="margin-left: 14px" for="remember">Запомнить меня</label>
-                    </div>
-                    <button class="button">ВОЙТИ</button>
+               <div class="inner_an_container">
+                    <form id="authForm" method="POST" action="/get_user">
+                        <div class="input-group">
+                            <label>Телефон</label>
+                            <input name="phone" style="margin-top: 4px" type="text" placeholder="Номер телефона" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Пароль</label>
+                            <input name="password" style="margin-top: 4px" type="password" placeholder="Введите пароль" required>
+                        </div>
+                        <div style="display: flex;" class="switch-container">
+                            <label class="switch">
+                                <input type="checkbox" id="remember">
+                                <span class="slider"></span>
+                            </label>
+                            <label style="margin-left: 14px" for="remember">Запомнить меня</label>
+                        </div>
+                        <button type="submit" class="button">ВОЙТИ</button>
+                    </form>
                     <div class="register">
                         Нет аккаунта? <a href="/regPage"> Зарегистрируйтесь</a>
                     </div>

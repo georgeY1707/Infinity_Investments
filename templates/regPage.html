@@ -32,20 +32,22 @@
         </div>
         <div class="container_an">
             <div class="inner_an_container">
-                <div class="input-group">
-                    <label>Номер телефона</label>
-                    <input style="margin-top: 4px" type="text" placeholder="Введите номер телефона">
-                </div>
-                <div class="input-group">
-                    <label>Фамилия и Имя</label>
-                    <input style="margin-top: 4px" type="text" placeholder="Введите вашу фамилию и имя">
-                </div>
-                <div class="input-group">
-                    <label>Пароль</label>
-                    <input style="margin-top: 4px" type="password" placeholder="Введите пароль">
-                    <input style="margin-top: 18px" type="password" placeholder="Повторите пароль">
-                </div>
-                <button style="margin-top: 26px" class="button">Зарегистрироваться</button>
+                <form id="regForm" method="POST" action="/create_user">
+                    <div class="input-group">
+                        <label>Номер телефона</label>
+                        <input name="phone" style="margin-top: 4px" type="text" placeholder="Введите номер телефона" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Фамилия и имя</label>
+                        <input name="name" style="margin-top: 4px" type="text" placeholder="Введите вашу ФИ" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Пароль</label>
+                        <input name="password" style="margin-top: 4px" type="password" placeholder="Введите пароль" required>
+                        <input style="margin-top: 18px" type="password" placeholder="Повторите пароль" required>
+                    </div>
+                    <button type="submit" style="margin-top: 26px" class="button">Зарегистрироваться</button>
+                </form>
                 <div class="register">
                     Есть аккаунт? <a href="/authPage"> Войдите</a>
                 </div>
