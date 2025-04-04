@@ -1,9 +1,7 @@
 import os
-
 from user import User
 from flask import Flask, render_template, redirect, url_for, request, session
 import bcrypt
-from fireo import connection
 from google.cloud import firestore
 
 
@@ -12,19 +10,30 @@ app.secret_key = 'qwerty'  # Необходимо для работы сесси
 
 @app.route('/authPage')
 def auth_page():
+    if 'user_id' in session:
+        return redirect(url_for('main_page'))
     return render_template('authPage.html')
 
 
 @app.route('/mainPage')
 def main_page():
-    # Проверяем, что пользователь вошел (сессия существует)
     if 'user_id' not in session:
-        return redirect(url_for('auth_page'))  # Перенаправляем на страницу входа
-    return render_template('mainPage.html')
+        return redirect(url_for('auth_page'))
 
+    # Получаем пользователя из базы данных по ID из сессии
+    user_id = session['user_id']
+    user = User.collection.get(user_id)  # Предполагается, что метод get() принимает ID
+
+    if not user:
+        return redirect(url_for('auth_page'))
+
+    return render_template('mainPage.html', username=user.name,
+                           bills="""""")
 
 @app.route('/regPage')
 def reg_page():
+    if 'user_id' in session:
+        return redirect(url_for('main_page'))
     return render_template('regPage.html')
 
 
@@ -53,17 +62,10 @@ def create_user():
             password=hashed_password,
             phone=phone,
             bills={
-                'rubles': 0,
-                'infcoin': 0,
-                'YDEX': 0,
-                'LKOH': 0,
-                'SBER': 0,
-                'T': 0,
-                'NVTK': 0,
-                'ROSN': 0
+                'rub': 0,
+                'infcoin': 0
             }
         )
-
         # Сохраняем пользователя
         user.save()
 
@@ -74,7 +76,6 @@ def create_user():
         # Авторизуем пользователя
         session['user_id'] = user.id
         return redirect(url_for('main_page'))
-
     except Exception as e:
         print("Ошибка при создании пользователя:", str(e))
         return redirect(url_for('reg_page'))
@@ -82,22 +83,19 @@ def create_user():
 
 @app.post("/get_user")
 def get_user():
-    # Получаем данные из формы входа
     phone = request.form.get('phone')
     password = request.form.get('password')
-
-    # Ищем пользователя по телефону
     user_query = User.collection.filter('phone', '==', phone).get()
 
-    if user_query is None:  # Если пользователь не найден
-        return redirect(url_for('auth_page'))  # Перенаправляем на страницу входа
+    if not user_query:  # Если список пуст
+        return redirect(url_for('auth_page'))
 
-    # Проверяем пароль
-    if bcrypt.checkpw(password.encode(), user_query.password.encode()):
-        session['user_id'] = user_query.id  # Сохраняем в сессии
+    user = user_query  # Берем первого пользователя из списка
+    if bcrypt.checkpw(password.encode(), user.password.encode()):
+        session['user_id'] = user.id
         return redirect(url_for('main_page'))
     else:
-        return redirect(url_for('auth_page'))  # Неверный пароль
+        return redirect(url_for('auth_page'))
 
 
 @app.route('/logout')
@@ -114,7 +112,6 @@ def index():
 
 if __name__ == '__main__':
     try:
-        #connection("config/infproject-t-firebase-adminsdk-fbsvc-59f397aa40.json")
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"config\infproject-t-firebase-adminsdk-fbsvc-59f397aa40.json"
         # Проверка подключения
         test_conn = firestore.Client()
