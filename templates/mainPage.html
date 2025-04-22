@@ -37,68 +37,62 @@
         <div class="exchange_container">
             <div class="exchange_left">
                 <p style="font-size: 24px;margin-top: 0px;margin-left: 0px" class="main_text">Добрый вечер</p>
-                <div style=" background: rgba(81, 81, 81, 0.90);" class="valutdiv">
+                 <div class="valutdiv">
                     <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/RUB.png"/>
-                        <p>7800 ₽</p>
+                        <input type="text" id="assetSearch" placeholder="Поиск актива" class="search-input">
                     </div>
-                    <p class="invest_up">+10 %</p>
                 </div>
-                <div class="valutdiv">
+                <div id="inf" class="valutdiv">
                     <div style="display: flex" class="valut_left">
                         <img src="/static/images/invest_icons/INF.png"/>
                         <p>5192 INFCOIN</p>
                     </div>
                     <p class="invest_up">+∞ %</p>
                 </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/YDEX.png"/>
-                        <p>19 YDEX</p>
-                    </div>
-                    <p class="invest_up">+1,39 %</p>
-                </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/LKOX.png"/>
-                        <p>4 LKOH</p>
-                    </div>
-                    <p class="invest_down">-1,24 %</p>
-                </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/SBER.png"/>
-                        <p>6 SBER</p>
-                    </div>
-                    <p class="invest_up">+1,38 %</p>
-                </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/T.png"/>
-                        <p>1 T</p>
-                    </div>
-                    <p class="invest_down">-0,38 %</p>
-                </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/NVTK.png"/>
-                        <p>15 NVTK</p>
-                    </div>
-                    <p class="invest_up">+0,2 %</p>
-                </div>
-                <div class="valutdiv">
-                    <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/ROSN.png"/>
-                        <p>4 ROSN</p>
-                    </div>
-                    <p class="invest_up">+0,9 %</p>
-                </div>
             </div>
             <div class="exchange_right">
-
             </div>
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('assetSearch').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const assetName = this.value.trim().toUpperCase();
+            if (assetName) {
+                fetch('/create_frame', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `name=${encodeURIComponent(assetName)}`
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(html => {
+                    // Создаем временный контейнер
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+
+                    // Получаем новый элемент
+                    const newAsset = tempDiv.querySelector('.valutdiv');
+
+                    // Находим элемент с id="inf" и вставляем после него
+                    const infElement = document.getElementById('inf');
+                    infElement.insertAdjacentElement('afterend', newAsset);
+
+                    // Очищаем поле поиска
+                    this.value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Не удалось найти актив. Попробуйте другой тикер.');
+                });
+            }
+        }
+    });
+</script>
 </body>
 </html>

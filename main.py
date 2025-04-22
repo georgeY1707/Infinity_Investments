@@ -3,6 +3,7 @@ from user import User
 from flask import Flask, render_template, redirect, url_for, request, session
 import bcrypt
 from google.cloud import firestore
+from GETDATA import get_data
 
 
 app = Flask(__name__)
@@ -29,6 +30,22 @@ def main_page():
 
     return render_template('mainPage.html', username=user.name,
                            bills="""""")
+
+@app.post("/create_frame")
+def create_frame():
+    name = request.form.get('name')
+    if not name:
+        return "Error: No name provided", 400
+    try:
+        price, invest_up, logo = get_data(name)
+        return render_template('activeframe.html',
+                               name=name,
+                               price=price,
+                               invest_up=invest_up,
+                               logo=logo)
+    except Exception as e:
+        print(f"Ошибка при получении данных: {e}")
+        return "Error fetching data", 500
 
 @app.route('/regPage')
 def reg_page():
