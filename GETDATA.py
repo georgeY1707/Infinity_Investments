@@ -15,7 +15,7 @@ def get_data(name):
 
         # 1. Получаем все цены
         prices = soup.find_all('span', class_="aAXzba")
-        invest_up = str(prices[0]).replace('<span class="aAXzba cAXzba" data-test-id="profitability-renderer">', '').replace('</span>', '')
+        invest_up = str(prices[0]).replace('<span class="aAXzba bAXzba" data-test-id="profitability-renderer">', '').replace('</span>', '')
         price = str(prices[1]).replace('<span class="aAXzba">', '').replace('</span>', '')
 
         # 2. Получаем логотип (более надежный способ)
@@ -30,3 +30,5 @@ def get_data(name):
         return price, invest_up, logo
     else:
         print(f"Ошибка запроса: {response.status_code}")
+
+print(get_data('GAZP'))
