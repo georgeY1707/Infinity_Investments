@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 
 
 def get_data(name):
+    name = name.lower()
+    if name == 'infcoin':
+        return 4, '+ ∞%', f'static/images/infcoin.png'
+
     url = f"https://alfabank.ru/make-money/investments/catalog/akcii/t/{name}/"
     headers = {
         "User-Agent": "Mozilla/4.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -30,5 +34,3 @@ def get_data(name):
         return price, invest_up, logo
     else:
         print(f"Ошибка запроса: {response.status_code}")
-
-print(get_data('GAZP'))
