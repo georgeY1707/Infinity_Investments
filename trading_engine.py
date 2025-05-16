@@ -1,4 +1,3 @@
-import json
 from GETDATA import get_data, get_infcoin_price
 
 
