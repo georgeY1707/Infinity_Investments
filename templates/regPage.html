@@ -34,19 +34,121 @@
             <div class="inner_an_container">
                 <form id="regForm" method="POST" action="/create_user">
                     <div class="input-group">
-                        <label>Номер телефона</label>
-                        <input name="phone" style="margin-top: 4px" type="text" placeholder="Введите номер телефона" required>
+                        <label>Телефон</label>
+                        <input name="phone" style="margin-top: 4px" type="text" placeholder="Номер телефона" required>
                     </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const phoneInput = document.querySelector('input[name="phone"]');
+
+                            phoneInput.addEventListener('input', function(e) {
+                                let value = phoneInput.value.replace(/\D/g, '');
+
+                                // Заменяем первую цифру на 7, если пользователь начал с 8 или 7
+                                if (value.startsWith('8')) {
+                                    value = '7' + value.slice(1);
+                                } else if (!value.startsWith('7')) {
+                                    value = '7' + value;
+                                }
+
+                                // Формируем маску
+                                let result = '+7 ';
+                                if (value.length > 1) {
+                                    result += '(' + value.substring(1, 4);
+                                }
+                                if (value.length >= 4) {
+                                    result += ') ' + value.substring(4, 7);
+                                }
+                                if (value.length >= 7) {
+                                    result += '-' + value.substring(7, 9);
+                                }
+                                if (value.length >= 9) {
+                                    result += '-' + value.substring(9, 11);
+                                }
+
+                                phoneInput.value = result;
+                            });
+
+                            // Не даём ввести лишние символы
+                            phoneInput.addEventListener('keydown', function(e) {
+                                // Разрешаем только цифры, Backspace, Delete, стрелки и Tab
+                                if (
+                                    !(
+                                        (e.key >= '0' && e.key <= '9') ||
+                                        ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)
+                                    )
+                                ) {
+                                    e.preventDefault();
+                                }
+                            });
+                        });
+                    </script>
                     <div class="input-group">
                         <label>Фамилия и имя</label>
                         <input name="name" style="margin-top: 4px" type="text" placeholder="Введите вашу ФИ" required>
                     </div>
                     <div class="input-group">
-                        <label>Пароль</label>
-                        <input name="password" style="margin-top: 4px" type="password" placeholder="Введите пароль" required>
-                        <input style="margin-top: 18px" type="password" placeholder="Повторите пароль" required>
+                        <label for="passwordInput">Пароль</label>
+                        <div style="position: relative;">
+                            <input
+                                    id="passwordInput"
+                                    name="password"
+                                    type="password"
+                                    placeholder="Введите пароль"
+                                    required
+                                    style="margin-top: 4px; padding-right: 50px;"
+                            >
+                            <span
+                                    onclick="togglePassword('passwordInput')"
+                                    style="
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;"
+                            >
+            <!-- SVG иконка глаза -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5C7 5 2.73 8.11 1 12C2.73 15.89 7 19 12 19
+                         C17 19 21.27 15.89 23 12C21.27 8.11 17 5 12 5Z"
+                      stroke="white" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/>
+            </svg>
+        </span>
+                        </div>
                     </div>
-                    <button type="submit" style="margin-top: 26px" class="button">Зарегистрироваться</button>
+
+                    <!-- Повторение пароля без глазика -->
+                    <div class="input-group">
+                        <label for="repeatPasswordInput">Повторите пароль</label>
+                        <input
+                                id="repeatPasswordInput"
+                                name="repeat_password"
+                                type="password"
+                                placeholder="Повторите пароль"
+                                required
+                                style="margin-top: 4px;"
+                        >
+                    </div>
+
+                    <!-- Скрипт для переключения видимости пароля -->
+                    <script>
+                        function togglePassword(inputId) {
+                            const input = document.getElementById(inputId);
+                            input.type = input.type === "password" ? "text" : "password";
+                        }
+                    </script>
+
+
+
+                    <button type="submit" style="margin-top: 26px; padding: 22px 32px" class="button">Зарегистрироваться</button>
                 </form>
                 <div class="register">
                     Есть аккаунт? <a href="/authPage"> Войдите</a>

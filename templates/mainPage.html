@@ -6,7 +6,8 @@
             font-family: 'Palui';
             src: url('static/css/fonts/palui.ttf') format("truetype");
         }
-        body{
+
+        body {
             background-image: url('/static/images/background.png');
         }
     </style>
@@ -14,8 +15,10 @@
     <title>Инвест INFCOIN</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 <div class="frame_r">
@@ -26,7 +29,7 @@
                 <p class="main_text">ИНВЕСТИЦИИ<br>БЕСКОНЕЧНОСТИ</p>
             </div>
             <div class="header_right">
-                <div class="block_menu-inactive" style="margin-left: 20px">
+                <div id="profileClick" class="block_menu-inactive" style="margin-left: 20px">
                     <p>{{ username }}</p>
                 </div>
             </div>
@@ -36,7 +39,7 @@
         <div class="exchange_container">
             <div class="exchange_left">
                 <p style="font-size: 24px;margin-top: 0px;margin-left: 0px" class="main_text">Добрый вечер</p>
-                 <div class="valutdiv">
+                <div class="valutdiv">
                     <div style="display: flex" class="valut_left">
                         <img src="/static/images/search.png"/>
                         <input type="text" id="assetSearch" placeholder="Поиск актива" class="search-input">
@@ -45,120 +48,178 @@
                 <div id="inf" class="valutdiv">
                     <div style="display: flex" class="valut_left">
                         <img src="/static/images/invest_icons/INF.png"/>
-                        <p>5192 INFCOIN</p>
+                        <p> 12 INFCOIN</p>
                     </div>
                     <p class="invest_up">+∞ %</p>
                 </div>
             </div>
-            <div class="exchange_right">
+            <div style="height: 710px" class="exchange_right">
                 <div class="top_of_exchange">
-                    <img id="valut_icon" src="/static/images/infcoin.png"/>
+                    <img id="valut_icon" src="/static/images/invest_icons/INF.png"/>
                     <p id="name_of_valut" style="color: white">INFCOIN</p>
-                    <p id="valut_change_percent" style="margin-left: 50px" class="invest_up">+∞ %</p>
+                    <p id="valut_change_percent" style="margin-left: 50px" class="invest_up">+∞ %*</p>
                 </div>
                 <div class="under_top_of_exchange">
-                    <p>*за последние 28 дней</p>
-                    <p id="valut_price" style="font-weight: bold">124 INFCOIN за 1 лот</p>
+                    <p>*за последние 15 дней</p>
+                    <p id="valut_price" style="font-weight: bold">1 INFCOIN за ∞ лот</p>
+                </div>
+                <div style="margin-top: 18px" class="grafik_div">
+                    <canvas id="priceChart" width="800" height="200"></canvas>
                 </div>
                 <div class="your_valut">
                     <div class="upper_my_valut">
-                        <p id="valut_balance" class="bolder_text"></p>
+                        <p id="valut_balance" class="bolder_text">На вашем счете {{ bills['infcoin'] }} INFCOIN</p>
+                        <p id="valut_balance_infcoin" class="thinner_text"></p>
                     </div>
                     <p>
+                        Вы можете как продавать так и покупать инвестиции с помощью INFCOIN.<br>
                         Не забывайте, что всю ответственность за проведение сделки несете<br>
                         только вы, поэтому решайте нужно это Вам или нет.
-                    </p>
+                    </p>.,
                 </div>
                 <div class="buttons_div">
                     <div id="sell_button" style="margin-left: 34px" class="red_button">Продать | Sell</div>
-                    <div id="buy_button" style="background-color: #35B100;margin-right: 34px" class="green_button">Купить | Buy</div>
+                    <div id="buy_button" style="background-color: #35B100;margin-right: 34px" class="green_button">
+                        Купить | Buy
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.getElementById('assetSearch').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            const assetName = this.value.trim().toUpperCase();
-            if (assetName) {
-                fetch('/create_frame', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `name=${encodeURIComponent(assetName)}`
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(text || 'Server error');
-                        });
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    // Создаем временный контейнер
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
+    // Генерация рандомных данных
+    // Функция генерации рандомных данных
+    document.getElementById("profileClick").addEventListener("click", function (){
+        window.location.href = "/profile"
+    })
+    function generateRandomData(min = 10, max = 50, length = 15) {
+        return Array.from({length}, () => Math.floor(Math.random() * (max - min + 1)) + min);
+    }
 
-                    // Получаем новый элемент
-                    const newAsset = tempDiv.querySelector('.valutdiv');
-
-                    // Находим элемент с id="inf" и вставляем после него
-                    const infElement = document.getElementById('inf');
-                    infElement.insertAdjacentElement('afterend', newAsset);
-
-                    // Очищаем поле поиска
-                    this.value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Не удалось найти актив. Попробуйте другой тикер.');
-                });
+    // Инициализация графика (глобально, чтобы потом обновлять)
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const priceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1 мая', '2 мая', '3 мая', '4 мая', '5 мая', '6 мая', '7 мая', '8 мая', 'Пт', 'Сб', 'Вс', 'Пн', 'Вт', 'Ср', 'Чт'],
+            datasets: [{
+                label: 'Данные актива',
+                data: generateRandomData(),
+                borderColor: 'rgb(53,171,2)',
+                backgroundColor: 'rgba(108,192,75,0.2)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {beginAtZero: false}
             }
         }
     });
+
+    function updateChart() {
+        priceChart.data.datasets[0].data = generateRandomData();
+        priceChart.update();
+    }
+
+    // В обработчике поиска, после вставки нового актива, обновляем график:
+    document.getElementById('assetSearch').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const assetName = this.value.trim().toUpperCase();
+            if (assetName) {
+                const existingAsset = document.querySelector(`.valutdiv[data-ticker="${assetName}"]`);
+                if (existingAsset) {
+                    existingAsset.click(); // Открываем карточку, если актив уже существует
+                    updateChart(); // Обновляем график
+                    this.value = ''; // Очищаем строку поиска
+                    return;
+                }
+
+                fetch('/create_frame', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `name=${encodeURIComponent(assetName)}`
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text || 'Server error');
+                            });
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = html;
+                        const newAsset = tempDiv.querySelector('.valutdiv');
+                        newAsset.setAttribute('data-ticker', assetName);
+
+                        const infElement = document.getElementById('inf');
+                        infElement.insertAdjacentElement('afterend', newAsset);
+
+                        // Автоклик по новому активу
+                        newAsset.click();
+                        this.value = '';
+
+                        // Обновляем график новыми данными
+                        updateChart();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Не удалось найти актив. Попробуйте другой тикер.');
+                    });
+            }
+        }
+    });
+
+
 </script>
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const exchangeLeft = document.querySelector('.exchange_left');
 
         exchangeLeft.addEventListener('click', function (event) {
-        const valutDiv = event.target.closest('.valutdiv');
+            const valutDiv = event.target.closest('.valutdiv');
 
-        if (!valutDiv || valutDiv.querySelector('input')) return; // игнорируем поиск
+            if (!valutDiv || valutDiv.querySelector('input')) return; // игнорируем поиск
 
-        const nameP = valutDiv.querySelector('.valut_left p');
-        const img = valutDiv.querySelector('.valut_left img');
-        const changeP = valutDiv.querySelector('.invest_up, .invest_down');
+            const nameP = valutDiv.querySelector('.valut_left p');
+            const img = valutDiv.querySelector('.valut_left img');
+            const changeP = valutDiv.querySelector('.invest_up, .invest_down');
 
-        if (!nameP) return;
+            if (!nameP) return;
 
-        const parts = nameP.innerText.trim().split(' ');
-        const valut = parts[parts.length - 1]; // последний элемент — тикер (например, GAZP)
+            const parts = nameP.innerText.trim().split(' ');
+            const valut = parts[parts.length - 1]; // последний элемент — тикер (например, GAZP)
 
-        // Обновление UI
-        document.getElementById('valut_icon').src = img?.src || '';
-        document.getElementById('name_of_valut').innerText = valut;
-        document.getElementById('valut_change_percent').innerText = changeP?.innerText || '';
-        document.getElementById('valut_balance').innerText = `На вашем счете ${nameP.innerText}`;
-        updateBalance()
+            // Обновление UI
+            document.getElementById('valut_icon').src = img?.src || '';
+            document.getElementById('name_of_valut').innerText = valut;
+            document.getElementById('valut_change_percent').innerText = changeP?.innerText || '';
+            document.getElementById('valut_balance').innerText = `На вашем счете ${nameP.innerText}`;
+            updateBalance()
 
-        // Получение доп. информации с сервера
-        fetch(`/get_valut_data/${valut}`)
-        .then(res => res.json())
-        .then(data => {
-        document.getElementById('name_of_valut').innerText = data.name;
-        document.getElementById('valut_icon').src = data.icon;
-        document.getElementById('valut_change_percent').innerText = data.change_percent;
-        document.getElementById('valut_price').innerText = data.price;
-        document.getElementById('valut_balance').innerText = `На вашем счете ${data.balance} ${ticker}`;
-    })
-        .catch(err => {
-        console.error("Ошибка при получении данных:", err);
-    });
-    });
+            // Получение доп. информации с сервера
+            fetch(`/get_valut_data/${valut}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('name_of_valut').innerText = data.name;
+                    document.getElementById('valut_icon').src = data.icon;
+                    document.getElementById('valut_change_percent').innerText = data.change_percent;
+                    document.getElementById('valut_price').innerText = data.price;
+                    document.getElementById('valut_balance').innerText = `На вашем счете ${data.balance} ${ticker}`;
+                    priceChart.data.datasets[0].data = generateRandomData();
+                    priceChart.update();
+                })
+
+                .catch(err => {
+                    console.error("Ошибка при получении данных:", err);
+                });
+        });
     });
 
     // Обработчики для кнопок Купить/Продать
@@ -172,70 +233,70 @@
         placeOrder('Sell');
     });
 
-async function placeOrder(operation) {
-    const ticker = document.getElementById('name_of_valut').textContent.trim();
-    if (!ticker || ticker === 'INFCOIN') {
-        alert('Сначала выберите актив из списка слева');
-        return;
-    }
-
-    try {
-        const lotsInput = prompt(`Введите количество лотов для ${operation === 'Buy' ? 'покупки' : 'продажи'}:`);
-        if (!lotsInput) return;
-
-        const lots = parseInt(lotsInput);
-        if (lots <= 0) {
-            throw new Error('Введите корректное количество лотов (целое число больше 0)');
+    async function placeOrder(operation) {
+        const ticker = document.getElementById('name_of_valut').textContent.trim();
+        if (!ticker) {
+            alert('Сначала выберите актив из списка слева');
+            return;
         }
 
-        const response = await fetch('/api/order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                ticker: ticker,
-                operation: operation,
-                lots: lots
-            })
-        });
+        try {
+            const lotsInput = prompt(`Введите количество лотов для ${operation === 'Buy' ? 'покупки' : 'продажи'}:`);
+            if (!lotsInput) return;
 
-        const result = await response.json();
+            const lots = parseInt(lotsInput);
+            if (lots <= 0) {
+                throw new Error('Введите корректное количество лотов (целое число больше 0)');
+            }
 
-        if (!result.success) {
-            throw new Error(result.error || result.message || 'Неизвестная ошибка сервера');
+            const response = await fetch('/api/order', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    ticker: ticker,
+                    operation: operation,
+                    lots: lots
+                })
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                throw new Error(result.error || result.message || 'Неизвестная ошибка сервера');
+            }
+
+            alert(result.message);
+            updateBalance();
+
+        } catch (error) {
+            console.error('Order error:', error);
+            alert(`Ошибка: ${error.message}`);
         }
-
-        alert(result.message);
-        updateBalance();
-
-    } catch (error) {
-        console.error('Order error:', error);
-        alert(`Ошибка: ${error.message}`);
     }
-}
 
-async function updateBalance() {
-    try {
-        const ticker = document.getElementById('name_of_valut').textContent.trim();
-        if (!ticker) return;
+    async function updateBalance() {
+        try {
+            const ticker = document.getElementById('name_of_valut').textContent.trim();
+            if (!ticker) return;
 
-        // Получаем обновленные данные
-        const response = await fetch(`/get_valut_data/${ticker}`);
-        if (!response.ok) throw new Error('Ошибка при получении данных');
+            // Получаем обновленные данные
+            const response = await fetch(`/get_valut_data/${ticker}`);
+            if (!response.ok) throw new Error('Ошибка при получении данных');
 
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
+            const data = await response.json();
+            if (data.error) throw new Error(data.error);
 
-        // Обновляем UI
-        document.getElementById('valut_balance').innerText =
-            `На вашем счете ${data.balance} ${ticker}`;
+            // Обновляем UI
+            document.getElementById('valut_balance').innerText =
+                `На вашем счете ${data.balance} ${ticker}`;
 
-    } catch (error) {
-        console.error('Ошибка обновления баланса:', error);
-        const ticker = document.getElementById('name_of_valut').textContent.trim();
-        document.getElementById('valut_balance').innerText =
-            `На вашем счете 0 ${ticker}`;
+        } catch (error) {
+            console.error('Ошибка обновления баланса:', error);
+            const ticker = document.getElementById('name_of_valut').textContent.trim();
+            document.getElementById('valut_balance').innerText =
+                `На вашем счете 0 ${ticker}`;
+        }
     }
-}
 </script>
 </body>
 </html>

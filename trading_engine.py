@@ -1,4 +1,11 @@
+import json
+
 from GETDATA import get_data
+
+
+def get_infcoin_price():
+    with open('config/infcoin-price-temp.json') as file:
+        return json.load(file)['price']
 
 
 def execute_order(user, ticker, operation, lots):
@@ -6,7 +13,9 @@ def execute_order(user, ticker, operation, lots):
     try:
         # Get data and unpack the tuple (we only need the price)
         price_data = get_data(ticker)
-        if isinstance(price_data, tuple):
+        if ticker == 'INFCOIN':
+            price = get_infcoin_price()
+        elif isinstance(price_data, tuple):
             price = price_data[0]  # Get the first element (price)
             # Convert price to float if it's a string
             if isinstance(price, str):

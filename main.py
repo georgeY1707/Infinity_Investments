@@ -15,6 +15,19 @@ app.secret_key = 'qwerty'  # Необходимо для работы сесси
 def index():
     return render_template('index.html')
 
+@app.route('/profile')
+def profile_page():
+    if 'user_id' not in session:
+        return redirect(url_for('auth_page'))
+
+    # Получаем пользователя из базы данных по ID из сессии
+    user_id = session['user_id']
+    user = User.collection.get(user_id)  # Предполагается, что метод get() принимает ID
+
+    if not user:
+        return redirect(url_for('auth_page'))
+
+    return render_template('profilePage.html', username=user.name, phone=user.phone, user=user)
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)  # Удаляем пользователя из сессии
@@ -186,8 +199,8 @@ def get_valut_data(ticker):
 
 if __name__ == '__main__':
     try:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"config\infproject-t-firebase-adminsdk-fbsvc-59f397aa40.json"
-        # Проверка подключения
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/infproject-t-firebase-adminsdk-fbsvc-59f397aa40.json"
+        # Проверка подключения  
         test_conn = firestore.Client()
         print("Firebase успешно подключен!")
     except Exception as e:

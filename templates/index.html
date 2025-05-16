@@ -27,10 +27,7 @@
                 <p class="main_text">ИНВЕСТИЦИИ<br>БЕСКОНЕЧНОСТИ</p>
             </div>
             <div class="header_right">
-                <div class="block_menu-inactive" style="margin-left: 20px">
-                    <p>Наша команда</p>
-                </div>
-                <div class="block_menu-inactive" style="margin-left: 20px">
+                <div id="goToINFcoin" class="block_menu-inactive" style="margin-left: 20px">
                     <p>INFCOIN</p>
                 </div>
             </div>
@@ -42,6 +39,7 @@
                 <img style="margin-left: 22px" src="static/images/briefcase.svg">
                 <p>Откройте бесконечный счет для инвестиций и получите до ∞ акций <a class="innerainfcoin">INFCOIN</a></p>
             </div>
+
         </div>
     </div>
     <div class="main_div_1">
@@ -99,13 +97,16 @@
 </div>
 <script>
     document.getElementById("loginBut").addEventListener("click", function() {
-        window.location.href = "/authPage"; // Замените на нужный файл
+        window.location.href = "/authPage";
     });
     document.getElementById("regBut").addEventListener("click", function() {
-        window.location.href = "/regPage"; // Замените на нужный файл
+        window.location.href = "/regPage";
     });
     document.getElementById("regBut2").addEventListener("click", function() {
-        window.location.href = "/regPage"; // Замените на нужный файл
+        window.location.href = "/regPage";
+    });
+    document.getElementById("goToINFcoin").addEventListener("click", function() {
+        window.location.href = "/authPage";
     });
 </script>
 </body>

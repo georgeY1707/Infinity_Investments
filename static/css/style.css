@@ -111,26 +111,31 @@
 .upper_my_valut{
     display: flex;
 }
+.header_right{
+    display: flex;
+    justify-content: center;
+}
 .your_valut{
     margin-left: 34px;
-    margin-top: 240px;
+    margin-top: 4px;
     display: flex;
     flex-direction: column;
 }
 .buttons_div{
-    margin-top: 30px;
+    margin-top: 16px;
     display: flex;
     justify-content: space-between;
 }
 .buttons_div div{
+    cursor: pointer;
     background-color: red;
     color: white;
     font-family: Montserrat;
     border: none;
     border-radius: 16px;
     display: flex;
-    padding : 24px 110px;
-    font-size: 20px;
+    padding : 24px 65px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -422,14 +427,16 @@ body {
     text-align: center;
 }
 .input-group input {
-    width: calc(100% - 22px);
-    padding: 22px 0px 22px 22px;
+    width: 100%; /* полностью занимает ширину контейнера */
+    padding: 22px 40px 22px 22px; /* добавляем правый паддинг под глазик */
     border-radius: 18px;
     font-size: 16px;
     border: none;
     background: #515151;
     color: white;
+    box-sizing: border-box; /* очень важно */
 }
+
 .checkbox {
     display: flex;
     align-items: center;
@@ -501,10 +508,18 @@ body {
     border-radius: 50%;
 }
 .main_container_of_exchange{
-    margin-top: 80px;
+    margin-top: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.text_profile p{
+    font-family: Montserrat;
+    font-weight: 600;
+}
+#profile_image.dragover {
+    border: 2px dashed #5a5a5a;
+    opacity: 0.7;
 }
 .exchange_container{
     /*border-radius: 18px;*/
@@ -516,12 +531,12 @@ body {
     max-width: 1400px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 10px 0;
 }
 .exchange_left{
     width: 400px;
     display: flex;
+    justify-content: start;
     flex-direction: column;
 }
 .valutdiv{

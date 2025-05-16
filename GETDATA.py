@@ -1,11 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+
+
+def get_infcoin_price():
+    with open('config/infcoin-price-temp.json') as file:
+        return json.load(file)['price']
 
 
 def get_data(name):
     name = name.lower()
     if name == 'infcoin':
-        return 4, '+ ∞%', f'static/images/infcoin.png'
+        return get_infcoin_price(), '+ ∞%', f'static/images/infcoin.png'
 
     url = f"https://alfabank.ru/make-money/investments/catalog/akcii/t/{name}/"
     headers = {
@@ -19,7 +25,8 @@ def get_data(name):
 
         # 1. Получаем все цены
         prices = soup.find_all('span', class_="aAXzba")
-        invest_up = str(prices[0]).replace('<span class="aAXzba bAXzba" data-test-id="profitability-renderer">', '').replace('</span>', '')
+        invest_up = str(prices[0]).replace('<span class="aAXzba bAXzba" data-test-id="profitability-renderer">',
+                                           '').replace('</span>', '')
         price = str(prices[1]).replace('<span class="aAXzba">', '').replace('</span>', '')
 
         # 2. Получаем логотип (более надежный способ)
