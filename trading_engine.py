@@ -1,11 +1,5 @@
 import json
-
-from GETDATA import get_data
-
-
-def get_infcoin_price():
-    with open('config/infcoin-price-temp.json') as file:
-        return json.load(file)['price']
+from GETDATA import get_data, get_infcoin_price
 
 
 def execute_order(user, ticker, operation, lots):
@@ -38,7 +32,7 @@ def execute_order(user, ticker, operation, lots):
                 return False, f"Недостаточно лотов. Доступно: {available_lots}, запрошено: {lots}"
 
             user.portfolio[ticker] -= lots
-            user.balance_rub += price * lots * 10
+            user.balance_rub += price * lots
 
         # 3. Сохраняем изменения
         user.save()

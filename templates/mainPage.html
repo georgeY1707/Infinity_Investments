@@ -29,6 +29,10 @@
                 <p class="main_text">ИНВЕСТИЦИИ<br>БЕСКОНЕЧНОСТИ</p>
             </div>
             <div class="header_right">
+                <div class="block_menu-inactive" style="margin-left: 20px">
+                    <img style="height: 42px;width: 42px;margin-left: 12px;" src="static/images/invest_icons/RUB.png" />
+                    <p id="valut_in_rubbles" style="font-family: Montserrat; font-size: 20px; padding: 40px 30px 40px 16px"></p>
+                </div>
                 <div id="profileClick" class="block_menu-inactive" style="margin-left: 20px">
                     <p>{{ username }}</p>
                 </div>
@@ -48,7 +52,7 @@
                 <div id="inf" class="valutdiv">
                     <div style="display: flex" class="valut_left">
                         <img src="/static/images/invest_icons/INF.png"/>
-                        <p> 12 INFCOIN</p>
+                        <p> {{ inf }} INFCOIN</p>
                     </div>
                     <p class="invest_up">+∞ %</p>
                 </div>
@@ -87,10 +91,70 @@
         </div>
     </div>
 </div>
+<!-- Кнопка поддержки -->
+<div id="support-btn" title="Поддержка">?</div>
+
+<!-- Окно поддержки -->
+<div id="support-popup">
+    <div id="support-popup-header">
+        <span>Поддержка</span>
+        <span id="support-popup-close">&times;</span>
+    </div>
+    <textarea id="support-message" placeholder="Введите ваш вопрос..." rows="4"></textarea>
+    <button id="support-send">Отправить</button>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('support-btn');
+    const popup = document.getElementById('support-popup');
+    const closeBtn = document.getElementById('support-popup-close');
+    const sendBtn = document.getElementById('support-send');
+    const msgInput = document.getElementById('support-message');
+
+    if (btn && popup && closeBtn && sendBtn && msgInput) {
+        btn.onclick = function() {
+            popup.style.display = 'flex';
+        };
+
+        closeBtn.onclick = function() {
+            popup.style.display = 'none';
+        };
+
+        sendBtn.onclick = async function() {
+            const msg = msgInput.value.trim();
+            if (msg) {
+                try {
+                    const response = await fetch('/send_message', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ message: msg })
+                    });
+
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        throw new Error(result.error || result.message || 'Неизвестная ошибка сервера');
+                    }
+
+                    alert(result.message);
+                } catch (error) {
+                    console.error('Order error:', error);
+                    alert(`Ошибка: ${error.message}`);
+                }
+                msgInput.value = '';
+                popup.style.display = 'none';
+            } else {
+                alert('Пожалуйста, введите сообщение.');
+            }
+        };
+    } else {
+        console.error('Один или несколько элементов не найдены в DOM');
+    }
+});
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Генерация рандомных данных
-    // Функция генерации рандомных данных
     document.getElementById("profileClick").addEventListener("click", function (){
         window.location.href = "/profile"
     })
@@ -179,6 +243,7 @@
 
 </script>
 <script>
+    updateBalance()
     document.addEventListener("DOMContentLoaded", function () {
         const exchangeLeft = document.querySelector('.exchange_left');
 
@@ -289,6 +354,7 @@
             // Обновляем UI
             document.getElementById('valut_balance').innerText =
                 `На вашем счете ${data.balance} ${ticker}`;
+            document.getElementById('valut_in_rubbles').innerText = `${parseFloat(data.rubbles).toFixed(2)}`;
 
         } catch (error) {
             console.error('Ошибка обновления баланса:', error);

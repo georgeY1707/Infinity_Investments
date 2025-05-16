@@ -1,9 +1,11 @@
 import os
+
+from olama import send_answer
 from user import User
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify
 import bcrypt
 from google.cloud import firestore
-from GETDATA import get_data
+from GETDATA import get_data, get_infcoin_price
 from trading_engine import execute_order
 
 app = Flask(__name__)
@@ -113,8 +115,7 @@ def main_page():
     if not user:
         return redirect(url_for('auth_page'))
 
-    return render_template('mainPage.html', username=user.name,
-                           bills="""""")
+    return render_template('mainPage.html', username=user.name, inf=get_infcoin_price(), bills="""""")
 
 @app.post("/create_frame")
 def create_frame():
@@ -183,7 +184,6 @@ def get_valut_data(ticker):
             return jsonify({"error": "User not found"}), 404
 
         price, invest_up, logo = get_data(ticker)
-
         # Формируем ответ
         return jsonify({
             "name": ticker,
@@ -191,16 +191,40 @@ def get_valut_data(ticker):
             "change_percent": invest_up,  # Можно реализовать получение изменения цены
             "price": f"{price} ₽ за 1 лот",
             "balance": user.portfolio.get(ticker, 0),
+            "rubbles": user.balance_rub
         })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.post("/send_message")
+def api_create_order():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "Неверный формат запроса"}), 400
+
+        required_fields = ['message']
+        if not all(field in data for field in required_fields):
+            return jsonify({"success": False, "error": "Не хватает обязательных полей"}), 400
+
+        success, message = send_answer(data['message'])
+
+        return jsonify({
+            "success": success,
+            "message": message
+        })
+
+    except Exception as e:
+        error_msg = f"Ошибка обработки ордера: {str(e)}"
+        print(error_msg)
+        return jsonify({"success": False, "error": error_msg}), 500
+
 
 if __name__ == '__main__':
     try:
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/infproject-t-firebase-adminsdk-fbsvc-59f397aa40.json"
-        # Проверка подключения  
+        # Проверка подключения
         test_conn = firestore.Client()
         print("Firebase успешно подключен!")
     except Exception as e:
