@@ -27,5 +27,3 @@ def send_answer(question):
         return True, response['message']['content']
     except Exception as e:
         return False, str(e)
-
-print(send_answer('hello'))
