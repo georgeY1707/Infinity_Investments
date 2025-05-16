@@ -30,7 +30,7 @@
             </div>
             <div class="header_right">
                 <div class="block_menu-inactive" style="margin-left: 20px">
-                    <img style="height: 42px;width: 42px;margin-left: 12px;" src="static/images/invest_icons/RUB.png" />
+                    <img style="height: 42px;width: 42px;margin-left: 12px;" src="static/images/RUB.png" />
                     <p id="valut_in_rubbles" style="font-family: Montserrat; font-size: 20px; padding: 40px 30px 40px 16px"></p>
                 </div>
                 <div id="profileClick" class="block_menu-inactive" style="margin-left: 20px">
@@ -51,7 +51,7 @@
                 </div>
                 <div id="inf" class="valutdiv">
                     <div style="display: flex" class="valut_left">
-                        <img src="/static/images/invest_icons/INF.png"/>
+                        <img src="/static/images/infcoin.png"/>
                         <p> {{ inf }} INFCOIN</p>
                     </div>
                     <p class="invest_up">+∞ %</p>
@@ -59,7 +59,7 @@
             </div>
             <div style="height: 710px" class="exchange_right">
                 <div class="top_of_exchange">
-                    <img id="valut_icon" src="/static/images/invest_icons/INF.png"/>
+                    <img id="valut_icon" src="/static/images/infcoin.png"/>
                     <p id="name_of_valut" style="color: white">INFCOIN</p>
                     <p id="valut_change_percent" style="margin-left: 50px" class="invest_up">+∞ %*</p>
                 </div>
@@ -103,6 +103,84 @@
     <textarea id="support-message" placeholder="Введите ваш вопрос..." rows="4"></textarea>
     <button id="support-send">Отправить</button>
 </div>
+<style>
+    #support-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 56px;
+        height: 56px;
+        background: #007bff;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transition: background 0.2s;
+    }
+    #support-btn:hover {
+        background: #0056b3;
+    }
+
+    #support-popup {
+        display: none;
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 300px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        z-index: 1001;
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #support-popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    #support-popup-close {
+        cursor: pointer;
+        font-size: 22px;
+        color: #888;
+    }
+
+    #support-message {
+        width: 100%;
+        resize: vertical;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        padding: 8px;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    #support-send {
+        width: 100%;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        padding: 8px 0;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    #support-send:hover {
+        background: #0056b3;
+    }
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('support-btn');

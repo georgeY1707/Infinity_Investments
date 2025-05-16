@@ -1,5 +1,4 @@
 import os
-
 from olama import send_answer
 from user import User
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify
@@ -7,6 +6,7 @@ import bcrypt
 from google.cloud import firestore
 from GETDATA import get_data, get_infcoin_price
 from trading_engine import execute_order
+
 
 app = Flask(__name__)
 app.secret_key = 'qwerty'  # Необходимо для работы сессий
@@ -198,7 +198,7 @@ def get_valut_data(ticker):
         return jsonify({"error": str(e)}), 500
 
 @app.post("/send_message")
-def api_create_order():
+def api_send_message():
     try:
         data = request.get_json()
         if not data:
@@ -207,7 +207,7 @@ def api_create_order():
         required_fields = ['message']
         if not all(field in data for field in required_fields):
             return jsonify({"success": False, "error": "Не хватает обязательных полей"}), 400
-
+        print(data['message'])
         success, message = send_answer(data['message'])
 
         return jsonify({

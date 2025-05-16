@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        @font-face {
+            font-family: 'Palui';
+            src: url('static/css/fonts/palui.ttf') format("truetype");
+        }
+        body{
+            background-image: url('/static/images/background.png');
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <title>Мой профиль</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="frame_r">
+    <div class="header">
+        <div class="center_header">
+            <div class="header_left">
+                <img style="width: 70px;height: 70px" src="static/images/logo.svg">
+                <p class="main_text">ИНВЕСТИЦИИ<br>БЕСКОНЕЧНОСТИ</p>
+            </div>
+            <div class="header_right">
+                <div id="goToMain" class="block_menu-inactive" style="margin-left: 20px">
+                    <p>Главная</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_container_of_exchange">
+        <div style="margin-bottom: 80px" class="exchange_container">
+            <div class="exchange_left">
+                <p style="font-size: 24px;margin-top: 0px;margin-left: 0px" class="main_text">Личный кабинет</p>
+                <div id="inf" class="valutdiv">
+                    <div style="display: flex" class="valut_left">
+                        <img src="/static/images/infcoin.png"/>
+                        <p>100 INFCOIN</p>
+                    </div>
+                    <p class="invest_up">+∞ %</p>
+                </div>
+                <div id="rub" class="valutdiv">
+                    <div style="display: flex" class="valut_left">
+                        <img src="/static/images/RUB.png"/>
+                        <p>100 ₽</p>
+                    </div>
+                    <p class="invest_up">+28,9 %</p>
+                </div>
+            </div>
+            <div style="height: 916px" class="exchange_right">
+                <div class="top_of_exchange">
+                    <input type="file" id="avatar_input" accept="image/*" style="display: none;">
+<img style="width: 140px; height: 140px; border-radius: 50%; cursor: pointer;"
+     id="profile_image" src="../static/images/upload.png" draggable="true" />
+
+                    <div style="display: flex; justify-content: space-between; flex-direction: column; color: white;">
+                        <p style="font-family: 'Palui SP Demo'"> {{ username }}</p>
+                        <p>Номер телефона: {{ phone }}</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column" class="under_top_of_exchange"><br>
+                    <div class="text_profile" style="display: flex;">
+                        <p>Статус “Вывод средств: </p><p style="color: #FF5B5B; margin-left: 6px;margin-right: 6px">заблокирован</p><p>навсегда” (но с любовью ❤️)</p><br>
+                    </div><br><br>
+                    <p style="font-family: Montserrat;font-weight: 600">🔐 Изменение пароля</p><br>
+                    <p style="font-weight: 400">
+                        Пароль нельзя сменить… пока не наступит конец бесконечности. Но не волнуйтесь — мы следим за вашей безопасностью так же,
+                        как за курсом INFCOIN — никак, но с оптимизмом!
+                    </p><br><br>
+                    <p style="font-family: Montserrat;font-weight: 600">🛟FAQ (Часто задаваемые вопросы)</p><br>
+                    <p>
+                        🔐 Можно ли сменить пароль?<br>ㅤ- Нет. Пока не наступит конец бесконечности. Потерпите)<br><br>
+💸 Как вывести средства?<br>ㅤ- Никак. Эта функция декоративная. Вы же не собирались реально?<br><br>
+📈 Почему курс INFCOIN всегда растёт?<br>ㅤ- Потому что мы не рисуем вниз. Только уверенность, только вверх.<br><br>
+🧮 Что с моими активами?<br>ㅤ- Они растут. Постоянно. Это факт, который не требует доказательств.<br><br>
+📬 Куда писать при проблемах?<br>ㅤ- В поддержку. Ответим сразу, как только INFCOIN выйдет на NASDAQ.
+                    </p><br>
+                    <div style="display: flex;margin-top: 12px; width: 100%;justify-content: center">
+                         <p id="logout" style="font-family: 'Palui SP Demo';color: #FF5B5B; font-size: 13px; cursor: pointer">Выйти из аккаунта</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("logout").addEventListener("click", function x(event) {
+             window.location.href = "/logout";
+    });
+    document.getElementById("goToMain").addEventListener("click", function d(event) {
+             window.location.href = "/mainPage";
+    });
+</script>
+<script>
+const profileImage = document.getElementById('profile_image');
+const avatarInput = document.getElementById('avatar_input');
+
+// Клик по изображению
+profileImage.addEventListener('click', () => {
+    avatarInput.click();
+});
+
+// Выбор файла
+avatarInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) setAvatar(file);
+});
+
+// Drag & Drop
+profileImage.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    profileImage.classList.add('dragover');
+});
+profileImage.addEventListener('dragleave', () => {
+    profileImage.classList.remove('dragover');
+});
+profileImage.addEventListener('drop', (e) => {
+    e.preventDefault();
+    profileImage.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) setAvatar(file);
+});
+
+function setAvatar(file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const imageUrl = e.target.result;
+        profileImage.src = imageUrl;
+        localStorage.setItem('avatar', imageUrl);
+        console.log("Аватар сохранён в localStorage.");
+    };
+    reader.readAsDataURL(file);
+}
+
+// Загружаем аватар при старте
+window.addEventListener('load', () => {
+    const savedAvatar = localStorage.getItem('avatar');
+    if (savedAvatar) {
+        profileImage.src = savedAvatar;
+        console.log("Аватар загружен из localStorage.");
+    } else {
+        console.log("Аватар в localStorage не найден.");
+    }
+});
+</script>
+
+
+</body>
+</html>
